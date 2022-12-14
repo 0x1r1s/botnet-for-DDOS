@@ -1,7 +1,10 @@
 # Script client
 import socket
+from scapy.all import *
 from cryptography.fernet import Fernet
 
+
+"""
 #Récupération de la clé symétrique
 with open("secret.key", "rb") as key_file:
     key=key_file.read()
@@ -22,6 +25,12 @@ decrypted_data=fernet.decrypt(encrypted_data)
 
 # Affichage des données reçues
 print(decrypted_data)
+"""
+number = 10
+target = "localhost"
+
+for x in range (0,number): 
+    send(IP(dst=target)/ICMP()/Raw(RandString(65483)))
 
 # Fermeture du socket client
-client_socket.close()
+#client_socket.close()
