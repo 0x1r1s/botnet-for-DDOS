@@ -3,6 +3,8 @@ import os
 from _thread import *
 import argparse
 from cryptography.fernet import Fernet
+from requests import get
+from netifaces import interfaces, ifaddresses, AF_INET
 
 print("""
 $$\                  $$\                          $$\                 $$\       $$\                     
@@ -33,7 +35,17 @@ fernet = Fernet(key)
 
 #création d'une socket
 server_socket=socket.socket()
-host="137.194.152.90"
+
+
+
+for ifaceName in interfaces():
+    addresses = [i['addr'] for i in ifaddresses(ifaceName).setdefault(AF_INET, [{'addr':'No IP addr'}] )]
+    for addresse in addresses:
+        if addresse[1]!=2:
+            ip=addresse
+    print(' '.join(addresses))
+
+host=str(ip)
 port=8081
 
 ThreadCount=0
