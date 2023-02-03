@@ -22,8 +22,8 @@ $$$$$$$  |\$$$$$$  | \$$$$  |$$ |  $$ |\$$$$$$$\  \$$$$  |      \$$$$$$$ |\$$$$$
 parser = argparse.ArgumentParser(prog="botnet DDoS", description="A botnet DDoS in python")
 
 parser.add_argument("ip_address", type=str, help="The IP address of the victim")
-parser.add_argument("-b", "--bitrate", type=int, help="The bitrate for the attack in MB/s", action="store")
-parser.add_argument("-t", "--time", type=int, help="The length of the attack in second", action="store")
+parser.add_argument("-b", "--bitrate", type=int, help="The bitrate for the attack in MB/s", action="store", default=10)
+parser.add_argument("-t", "--time", type=int, help="The length of the attack in second", action="store", default=6°)
 
 args = parser.parse_args() # Access args with args.ip_address, args.bitrate, args.time
 
